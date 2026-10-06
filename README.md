@@ -10,8 +10,10 @@ below and not to the code the tool was pointed at.
 
 ## Branches
 
-This repository holds 432 orphan branches, one per grid cell across every Java version, build system and packaging combination in this corpus. `main` carries the title
-only. See `dataset.json` for the machine-readable description of this branch.
+Branch `java_all_tool` of `java-fix` was built from `testable-platform/java-corpus`
+branch `JV_V16_MAVEN_THINJAR_MONO`, with its full git history kept. Java 16 is the only
+version where all 13 tools below run: CK stops at Java 16 and Spoon starts at Java 12.
+See `dataset.json` for the machine-readable description of this branch.
 
 ## Branch variables
 
@@ -25,15 +27,9 @@ only. See `dataset.json` for the machine-readable description of this branch.
 
 ## Supported tools
 
-19 tools are wired on this branch (one `Tool Triggering (Synthetic Data)/<dir>/` folder
-each). **14 of them run on JDK 16 (host JDK 17); 5 do not.**
-
-That is the measurement, not a defect. A tool that cannot run exits **3**,
-not 0 -- a skip that looks like a pass is the failure mode this corpus
-exists to expose. Every `trigger.yaml` records the real, specific reason
-when a tool can't run on this family.
-
-### Running here
+13 tools are wired on this branch (one `Tool Triggering (Synthetic Data)/<dir>/` folder
+each), and **all 13 run on JDK 16 (host JDK 17)**. The corpus tools that cannot run
+here (`asm-defuse`, `ba-dua`, `custom-def-use`, `nullaway`, `sonar`) and `grype` were removed.
 
 | Tool | Role | Block |
 |---|---|---|
@@ -42,25 +38,14 @@ when a tool can't run on this family.
 | `cpd` | primary | Code Duplication |
 | `diff-cover` | primary | Coverage Delta |
 | `git-churn` | primary | Code Churn |
-| `grype` | alternative | Dependency Risk (SCA) |
 | `jacoco` | primary | Statement / Branch / Path Coverage |
 | `lizard` | alternative | Cyclomatic Complexity |
 | `owasp-dependency-check` | primary | Dependency Risk (SCA) |
 | `pit` | primary | Mutation Score |
 | `pmd` | primary | Cognitive Complexity |
 | `pydriller` | alternative | Code Churn |
-| `spoon` | primary | Data Flow Testing |
+| `spoon` | primary | Data Flow Testing (Def-Use) |
 | `spotbugs` | primary | Static Vulnerabilities (SAST) |
-
-### Dark here
-
-| Tool | Role | Block | Why |
-|---|---|---|---|
-| `asm-defuse` | primary | Data Flow Testing | no jar published under a stable coordinate - place one in Tool Triggering (Synthetic Data)/asm-defuse/ |
-| `ba-dua` | primary | All Definition Coverage | ba-dua 0.8.0 links JaCoCo 0.8.1, which stops at Java 10 class files |
-| `custom-def-use` | n/a (placeholder) | Data Flow Testing | not a tool - the sheet names no package, version or vendor |
-| `nullaway` | primary | All Definition Coverage | runs as an Error Prone compiler plugin, not a standalone step |
-| `sonar` | primary | Coverage Delta | needs a running SonarQube server; set SONAR_HOST_URL to enable |
 
 ## Build
 
@@ -142,18 +127,11 @@ Three sibling folders sit at the repo root, alongside this branch's own
 `Tool Triggering (Synthetic Data)/` (above).
 
 ### `Tool Triggering (Tool Github Test data)/`
-16 of this branch's 19 wired tools carry their own real upstream test suite
-or source, pulled as-is from that tool's actual GitHub project -- not
-generated: `CK/`, `Spoon/`, `JaCoCo/`, `PMD/`, `SpotBugs/`, `FindSecBugs/`,
-`Checkstyle/`, `CPD/`, `PIT/`, `OWASP Dependency-Check/`, `Grype/`, `Lizard/`,
-`ASM-DefUse/`, `ba-dua/`, `diff-cover/` and `pydriller/`. The remaining 3
-wired tools have no folder here because there is no applicable upstream test
-suite to pull: `git-churn` is just git's own log, not a packaged tool;
-`nullaway` runs embedded as an Error Prone compiler plugin, not a standalone
-artifact; and `sonar` needs a live SonarQube server rather than a static
-test suite. (`custom-def-use` is the corpus's own deliberate non-tool
-placeholder -- see the Supported tools table above -- so it was never a
-candidate for this folder either.)
+12 of the 13 tools carry their own real upstream test suite or source, pulled
+as-is from that tool's GitHub project: `CK/`, `Spoon/`, `JaCoCo/`, `PMD/`,
+`SpotBugs/` (with `FindSecBugs/`), `Checkstyle/`, `CPD/`, `PIT/`,
+`OWASP Dependency-Check/`, `Lizard/`, `diff-cover/` and `pydriller/`.
+`git-churn` has no folder because it is git's own log, not a packaged tool.
 
 ### `Tool Clean (Synthetic Data)/`
 Most tools here carry 5 generated fixture packages, one per representative
