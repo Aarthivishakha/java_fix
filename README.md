@@ -151,6 +151,19 @@ silently drops their content.
 
 Each tool has `Tool Triggering (Synthetic Data)/<tool>/trigger.yaml` and `Tool Triggering (Synthetic Data)/<tool>/run.sh`. Runners follow the
 exit-code contract: 0 ran, 1 failed, 3 skipped-cannot-run, 4 not-installed.
+Run them from anywhere, e.g. `"./Tool Triggering (Synthetic Data)/ck/run.sh"`; output
+goes to `Tool Triggering (Synthetic Data)/<tool>/out/` (git-ignored).
+
+What each runner needs on the machine:
+
+| Tools | Needs |
+|---|---|
+| `checkstyle`, `cpd`, `pmd`, `spotbugs`, `jacoco`, `pit`, `owasp-dependency-check` | Maven + JDK 17 or newer (OWASP also downloads the NVD database) |
+| `ck`, `spoon` | JDK 17 or newer; the jars are bundled (`ck/ck.jar` = CK 0.7.0, `spoon/spoon.jar` = Spoon 11.5.0) |
+| `git-churn` | git |
+| `lizard` | `pip install lizard` |
+| `pydriller` | `python3` + `pip install pydriller` |
+| `diff-cover` | `pip install diff-cover`; run `jacoco` first. Compares against `main` (or `origin/main`, or `$BASE_BRANCH`) |
 
 ## Planted CVE pins
 

@@ -6,3 +6,4 @@ lib/
 *.class
 .idea/
 *.iml
+Tool Triggering (Synthetic Data)/*/out/

@@ -5,7 +5,7 @@ kind: standalone
 java_version: "16"
 host_jdk: "17"
 build_system: "Maven"
-command: ./tools/diff-cover/run.sh
+command: "./Tool Triggering (Synthetic Data)/diff-cover/run.sh"
 exit_codes:
   0: ran
   1: failed
